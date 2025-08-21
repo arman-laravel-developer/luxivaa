@@ -248,14 +248,14 @@
             </div>
         </section>
     </div>
-    
+
     <div style="display: none">
         <input type="text" id="product_name" value="{{ $details->name }}">
         <input type="text" id="price" value="{{ $details->regular_price }}">
         <input type="text" id="product_id" value="{{ $details->id }}">
         <input type="text" id="category" value="{{ $details->category->name }}">
     </div>
-    
+
 @endsection
 
 @push('script')
