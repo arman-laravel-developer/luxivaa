@@ -44,25 +44,25 @@ class Order extends Model
     }
 
     public function invoiceNumber()
-    {
-        $prefix = strtoupper(substr(config('app.name'), 0, 3)); // First 3 letters of APP_NAME in uppercase
+{
+    $prefix = strtoupper(str_replace(' ', '', config('app.name'))); // Full app name (no spaces, all uppercase)
 
-        $orderLastId = Order::orderBy('id', 'desc')->first();
+    $orderLast = Order::orderBy('id', 'desc')->first();
 
-        if (! $orderLastId) {
-            return $prefix . '0001';
-        } else {
-            $lastInvoice = $orderLastId->orderId ?? null;
-
-            if ($lastInvoice) {
-                // Extract the numeric part from previous invoice number
-                $number = (int) filter_var($lastInvoice, FILTER_SANITIZE_NUMBER_INT);
-                return $prefix . sprintf('%04d', $number + 1);
-            }
-
-            return $prefix . '0001';
-        }
+    if (! $orderLast) {
+        return $prefix . '0001';
     }
+
+    $lastInvoice = $orderLast->orderId ?? null;
+
+    if ($lastInvoice) {
+        // Extract numeric part from the previous invoice number
+        $number = (int) filter_var($lastInvoice, FILTER_SANITIZE_NUMBER_INT);
+        return $prefix . sprintf('%04d', $number + 1);
+    }
+
+    return $prefix . '0001';
+}
 
     public function notification()
     {
